@@ -1,0 +1,37 @@
+ListRestAPI\Entity\Survey:
+    survey_{1..20}:
+        question: 'survey_<numberBetween(1,5000)>'
+        openAt: <pastDateTime()>
+        closeAt: <pastDateTime()>
+        status: 'active'
+        partner: '@partner_1'
+    survey_{21..40}:
+        question: 'survey_<numberBetween(1,5000)>'
+        openAt: <pastDateTime()>
+        closeAt: <pastDateTime()>
+        status: 'active'
+        partner: '@partner_2'
+    survey_{41..60}:
+        question: 'survey_<numberBetween(1,5000)>'
+        openAt: <currentDateTime()>
+        closeAt: <futureDateTime()>
+        status: 'active'
+        partner: '@partner_3'
+    survey_{61..80}:
+        question: 'survey_<numberBetween(1,5000)>'
+        openAt: <currentDateTime()>
+        closeAt: <futureDateTime()>
+        status: 'active'
+        partner: '@partner_4'
+    survey_{81..100}:
+        question: 'survey_<numberBetween(1,5000)>'
+        openAt: <currentDateTime()>
+        closeAt: <futureDateTime()>
+        status: 'active'
+        partner: '@partner_5'
+    survey_{101..121}:
+        question: 'survey_<numberBetween(1,5000)>'
+        openAt: <pastDateTime()>
+        closeAt: <pastDateTime()>
+        status: 'inactive'
+        partner: '@partner_6'

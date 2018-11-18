@@ -1,0 +1,4 @@
+ListRestAPI\Entity\Partner:
+    partner_{1..6}:
+        name: 'partner_name_<current()>'
+        icon: 'icon_partner_<current()>'
