@@ -25,7 +25,7 @@ class PartnerController extends FOSRestController
     {
         $partners = $entityManager
             ->getRepository(Partner::class)
-            ->getSearchResults($request->get('status'), $request->get('limit', '3'))
+            ->getSearchResults($request->get('status'))
         ;
 
         $context = new Context();

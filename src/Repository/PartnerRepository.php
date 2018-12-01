@@ -10,19 +10,18 @@ class PartnerRepository extends EntityRepository
 {
     /**
      * @param string $status
-     * @param string $limit
      *
      * @return array
      */
-    public function getSearchResults(string $status, string $limit): array
+    public function getSearchResults(string $status): array
     {
         $queryBuilder = $this->createQueryBuilder('p')
             ->select()
             ->innerJoin('p.surveys', 's')
             ->groupBy('p.id')
             ->orderBy('p.id')
-            ->setMaxResults($limit)
         ;
+
         $this->addWhereSurveyStatus($queryBuilder, $status);
 
         return $queryBuilder->getQuery()->getResult();
@@ -37,9 +36,20 @@ class PartnerRepository extends EntityRepository
      */
     private function addWhereSurveyStatus(QueryBuilder $queryBuilder, string $status, string $alias = 's'): QueryBuilder
     {
-        return $queryBuilder
-            ->andWhere(sprintf('%s.status = :status', $alias))
-            ->setParameter('status', $status)
-        ;
+        // If no status parameter has been specified or the value of the parameter is neither active or inactive apply no filtration logic
+        if(!$status || !in_array($status, ['active', 'inactive'])) {
+            return $queryBuilder;
+        }
+
+        // Refactored to base the filtration on the openAt and closeAt fields such that the filtration is more reliable
+        if($status == 'active') {
+            return $queryBuilder
+                ->andWhere(sprintf('%s.openAt <= \'%s\'', $alias, date('Y-m-d H:i:s')))
+                ->andWhere(sprintf('%s.closeAt >= \'%s\'', $alias, date('Y-m-d H:i:s')));
+        } else {
+            return $queryBuilder
+                ->orWhere(sprintf('%s.openAt >= \'%s\'', $alias, date('Y-m-d H:i:s')))
+                ->orWhere(sprintf('%s.closeAt <= \'%s\'', $alias, date('Y-m-d H:i:s')));
+        }
     }
 }
