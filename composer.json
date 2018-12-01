@@ -19,7 +19,8 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "nelmio/alice": "^3.4",
-        "symfony/dotenv": "*"
+        "symfony/dotenv": "*",
+        "symfony/phpunit-bridge": "*"
     },
     "config": {
         "preferred-install": {
