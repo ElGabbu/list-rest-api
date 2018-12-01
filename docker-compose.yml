@@ -1,33 +1,42 @@
-version: "3.1"
+version: "3.5"
 services:
-    mariadb:
-      image: mariadb:10.1
-      container_name: list-rest-api-mariadb
-      working_dir: /application
-      volumes:
-        - .:/application
-      environment:
-        - MYSQL_ROOT_PASSWORD=root
-        - MYSQL_DATABASE=list-api
-        - MYSQL_USER=list-api
-        - MYSQL_PASSWORD=root
-      ports:
-        - "8003:3306"
-
-    webserver:
-      image: nginx:alpine
-      container_name: list-rest-api-webserver
-      working_dir: /application
-      volumes:
-          - .:/application
-          - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      ports:
-       - "8005:80"
-
-    php-fpm:
-      build: docker/php-fpm
-      container_name: list-rest-api-php-fpm
-      working_dir: /application
-      volumes:
-        - .:/application
-        - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+  mariadb:
+    image: mariadb:10.1
+    container_name: list-rest-api-mariadb
+    working_dir: /application
+    volumes:
+      - .:/application
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=list-api
+      - MYSQL_USER=list-api
+      - MYSQL_PASSWORD=root
+    ports:
+      - "8003:3306"
+    networks:
+      - chiliz
+  webserver:
+    image: nginx:alpine
+    container_name: list-rest-api-webserver
+    working_dir: /application
+    volumes:
+      - .:/application
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8005:80"
+    expose:
+      - 80
+    networks:
+      - chiliz
+  php-fpm:
+    build: docker/php-fpm
+    container_name: list-rest-api-php-fpm
+    working_dir: /application
+    volumes:
+      - .:/application
+      - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+    networks:
+      - chiliz
+networks:
+  chiliz:
+    name: chiliz-net
